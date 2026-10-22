@@ -1,1 +1,48 @@
-
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TFV KEY 15P</title><style>
+:root{color-scheme:dark;--bg:#071426;--panel:#0d2039;--blue:#238cff;--cyan:#54c8ff;--muted:#9db2cc}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#12345c 0,#08172b 48%,#050d19 100%);font-family:Arial,sans-serif;color:#eef6ff;display:flex;align-items:center;justify-content:center;padding:22px}
+.wrap{width:100%;max-width:430px;text-align:center}.card{background:linear-gradient(160deg,rgba(17,43,75,.97),rgba(7,20,39,.98));border:1px solid rgba(74,163,255,.35);border-radius:24px;padding:30px 24px;box-shadow:0 18px 60px #0009,0 0 35px #168cff22}
+.logo{width:92px;height:92px;object-fit:contain;border-radius:22px;margin-bottom:15px;filter:drop-shadow(0 0 16px #168cff77)}
+h1{font-size:25px;margin:5px 0 8px;letter-spacing:1px}.sub{color:var(--muted);font-size:13px;margin-bottom:24px}
+.keybox{min-height:58px;padding:17px 12px;border-radius:12px;background:#061326;border:1px solid #24517e;color:#fff;font-weight:700;letter-spacing:1.2px;overflow-wrap:anywhere;margin:18px 0}
+button,.back{display:block;width:100%;border:0;border-radius:12px;padding:15px 12px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none}
+.primary{background:linear-gradient(90deg,#1478ef,#28b4ff);color:white;box-shadow:0 7px 22px #168cff44}
+.secondary{background:#132d4c;color:#dceeff;border:1px solid #28517c;margin-top:10px}
+.back{margin-top:12px;background:#0a1a2e;border:1px solid #244568;color:#9ed5ff}
+button:disabled{opacity:.55;cursor:wait}.note{font-size:12px;color:#91a9c4;margin-top:18px;line-height:1.5}.status{font-size:13px;color:#8fd4ff;min-height:18px;margin-top:12px}
+</style></head>
+<body><main class="wrap"><section class="card">
+<img class="logo" src="https://i.postimg.cc/qqYNdzV6/ic-launcher.png" alt="TFV Logo">
+<h1>TFV KEY 15P</h1><div class="sub">HỆ THỐNG CẤP KEY TỰ ĐỘNG</div>
+<div class="keybox" id="key">Nhấn LẤY KEY để bắt đầu</div>
+<button class="primary" id="get" onclick="getKey()">LẤY KEY</button>
+<button class="secondary" id="copy" onclick="copyKey()" disabled>COPY KEY</button>
+<a class="back" href="https://t.me/KingToolFernz_bot">QUAY LẠI BOT TELEGRAM</a>
+<div class="status" id="status"></div>
+<div class="note">Vui lòng chỉ lấy KEY khi bạn thực sự cần sử dụng.</div>
+</section></main>
+<script>
+const tier="15";
+let currentKey="";
+async function getKey(){
+ const btn=document.getElementById("get"), status=document.getElementById("status");
+ btn.disabled=true; status.textContent="Đang kiểm tra kho KEY...";
+ try{
+  const response=await fetch("/.netlify/functions/claim?type="+tier,{method:"POST"});
+  const data=await response.json();
+  if(!response.ok||!data.ok) throw new Error(data.error||"Không thể lấy KEY.");
+  currentKey=data.key;
+  document.getElementById("key").textContent=currentKey;
+  document.getElementById("copy").disabled=false;
+  status.textContent="Lấy KEY thành công!";
+ }catch(e){status.textContent=e.message;}
+ finally{btn.disabled=false;}
+}
+async function copyKey(){
+ if(!currentKey)return;
+ try{await navigator.clipboard.writeText(currentKey);document.getElementById("status").textContent="Đã sao chép KEY!";}
+ catch(e){document.getElementById("status").textContent="Không sao chép được, hãy giữ để chọn KEY.";}
+}
+</script></body></html>
